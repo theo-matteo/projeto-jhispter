@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (estudante(); as estudanteRef) {
+      <div>
+        <h2 data-cy="estudanteDetailsHeading"><span>Estudante</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ estudanteRef.id }}</span>
+          </dd>
+          <dt><span>Nome do estudante</span></dt>
+          <dd>
+            <span>{{ estudanteRef.nomeEstudante }}</span>
+          </dd>
+          <dt><span>E-mail do estudante</span></dt>
+          <dd>
+            <span>{{ estudanteRef.email }}</span>
+          </dd>
+          <dt><span>Telefone do estudante</span></dt>
+          <dd>
+            <span>{{ estudanteRef.telefone }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/estudante', estudanteRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

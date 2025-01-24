@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (emprestimo(); as emprestimoRef) {
+      <div>
+        <h2 data-cy="emprestimoDetailsHeading"><span>Emprestimo</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ emprestimoRef.id }}</span>
+          </dd>
+          <dt><span>Data Emprestimo</span></dt>
+          <dd>
+            <span>{{ emprestimoRef.dataEmprestimo | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Status</span></dt>
+          <dd>
+            <span>{{ emprestimoRef.status }}</span>
+          </dd>
+          <dt><span>Estudante</span></dt>
+          <dd>
+            @if (emprestimo()!.estudante) {
+              <div>
+                <a [routerLink]="['/estudante', emprestimo()!.estudante?.id, 'view']">{{ emprestimoRef.estudante?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Livro</span></dt>
+          <dd>
+            @if (emprestimo()!.livro) {
+              <div>
+                <a [routerLink]="['/livro', emprestimo()!.livro?.id, 'view']">{{ emprestimoRef.livro?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/emprestimo', emprestimoRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

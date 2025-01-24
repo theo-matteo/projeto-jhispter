@@ -1,0 +1,23 @@
+{
+  "annotations": {
+    "changelogDate": "20250124142538"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "nomeAutor",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Autor",
+  "relationships": [
+    {
+      "otherEntityName": "livro",
+      "relationshipName": "autor",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

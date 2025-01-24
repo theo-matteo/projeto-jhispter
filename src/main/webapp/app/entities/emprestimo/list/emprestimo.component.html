@@ -1,0 +1,118 @@
+<div>
+  <h2 id="page-heading" data-cy="EmprestimoHeading">
+    <span>Emprestimos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-emprestimo"
+        [routerLink]="['/emprestimo/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Criar novo Emprestimo</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (emprestimos().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Emprestimo encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataEmprestimo">
+              <div class="d-flex">
+                <span>Data Emprestimo</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span>Status</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="estudante.id">
+              <div class="d-flex">
+                <span>Estudante</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="livro.id">
+              <div class="d-flex">
+                <span>Livro</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (emprestimo of emprestimos(); track trackId(emprestimo)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/emprestimo', emprestimo.id, 'view']">{{ emprestimo.id }}</a>
+              </td>
+              <td>{{ emprestimo.dataEmprestimo | formatMediumDatetime }}</td>
+              <td>{{ emprestimo.status }}</td>
+              <td>
+                @if (emprestimo.estudante) {
+                  <div>
+                    <a [routerLink]="['/estudante', emprestimo.estudante.id, 'view']">{{ emprestimo.estudante.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (emprestimo.livro) {
+                  <div>
+                    <a [routerLink]="['/livro', emprestimo.livro.id, 'view']">{{ emprestimo.livro.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/emprestimo', emprestimo.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a [routerLink]="['/emprestimo', emprestimo.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(emprestimo)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

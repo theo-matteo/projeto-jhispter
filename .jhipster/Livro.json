@@ -1,0 +1,35 @@
+{
+  "annotations": {
+    "changelogDate": "20250124142540"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "titulo",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "quantidade",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Livro",
+  "relationships": [
+    {
+      "otherEntityName": "autor",
+      "otherEntityRelationshipName": "autor",
+      "relationshipName": "autor",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "emprestimo",
+      "relationshipName": "livro",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

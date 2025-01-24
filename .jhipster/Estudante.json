@@ -1,0 +1,33 @@
+{
+  "annotations": {
+    "changelogDate": "20250124142537"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "nomeEstudante",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "telefone",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Estudante",
+  "relationships": [
+    {
+      "otherEntityName": "emprestimo",
+      "relationshipName": "estudante",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

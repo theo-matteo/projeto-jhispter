@@ -1,0 +1,25 @@
+entity Livro {
+    titulo String required
+    quantidade Integer required
+}
+
+entity Estudante {
+    nomeEstudante String required
+    email String required
+    telefone String required
+}
+
+entity Emprestimo {
+    dataEmprestimo Instant required
+    status String required 
+}
+
+entity Autor {
+    nomeAutor String required
+}
+
+relationship ManyToOne {
+    Emprestimo to Estudante{estudante}
+    Emprestimo to Livro{livro}
+    Livro to Autor{autor}
+}

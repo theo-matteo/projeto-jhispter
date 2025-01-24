@@ -1,0 +1,36 @@
+{
+  "annotations": {
+    "changelogDate": "20250124142539"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "dataEmprestimo",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Emprestimo",
+  "relationships": [
+    {
+      "otherEntityName": "estudante",
+      "otherEntityRelationshipName": "estudante",
+      "relationshipName": "estudante",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "livro",
+      "otherEntityRelationshipName": "livro",
+      "relationshipName": "livro",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

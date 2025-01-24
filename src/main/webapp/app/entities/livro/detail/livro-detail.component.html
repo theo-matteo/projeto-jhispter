@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (livro(); as livroRef) {
+      <div>
+        <h2 data-cy="livroDetailsHeading"><span>Livro</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ livroRef.id }}</span>
+          </dd>
+          <dt><span>Titulo</span></dt>
+          <dd>
+            <span>{{ livroRef.titulo }}</span>
+          </dd>
+          <dt><span>Quantidade</span></dt>
+          <dd>
+            <span>{{ livroRef.quantidade }}</span>
+          </dd>
+          <dt><span>Autor</span></dt>
+          <dd>
+            @if (livro()!.autor) {
+              <div>
+                <a [routerLink]="['/autor', livro()!.autor?.id, 'view']">{{ livroRef.autor?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/livro', livroRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
