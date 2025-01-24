@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-emprestimo-heading" data-cy="EmprestimoCreateUpdateHeading">Criar ou editar Emprestimo</h2>
+      <h2 id="jhi-emprestimo-heading" data-cy="EmprestimoCreateUpdateHeading">Criar ou editar empréstimo</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -15,7 +15,7 @@
 
         @let dataEmprestimoRef = editForm.get('dataEmprestimo')!;
         <div class="mb-3">
-          <label class="form-label" for="field_dataEmprestimo">Data Emprestimo</label>
+          <label class="form-label" for="field_dataEmprestimo">Data do empréstimo</label>
           <div class="d-flex">
             <input
               id="field_dataEmprestimo"
@@ -64,7 +64,7 @@
           >
             <option [ngValue]="null"></option>
             @for (estudanteOption of estudantesSharedCollection; track $index) {
-              <option [ngValue]="estudanteOption">{{ estudanteOption.id }}</option>
+              <option [ngValue]="estudanteOption">{{ estudanteOption.id }} - {{ estudanteOption.nomeEstudante }}</option>
             }
           </select>
         </div>
@@ -74,7 +74,7 @@
           <select class="form-control" id="field_livro" data-cy="livro" name="livro" formControlName="livro" [compareWith]="compareLivro">
             <option [ngValue]="null"></option>
             @for (livroOption of livrosSharedCollection; track $index) {
-              <option [ngValue]="livroOption">{{ livroOption.id }}</option>
+              <option [ngValue]="livroOption">{{ livroOption.id }} - {{ livroOption.titulo }}</option>
             }
           </select>
         </div>

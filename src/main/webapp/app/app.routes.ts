@@ -9,7 +9,7 @@ const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./home/home.component'),
-    title: 'home.title',
+    title: 'Página inicial',
   },
   {
     path: '',
@@ -31,7 +31,7 @@ const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./login/login.component'),
-    title: 'login.title',
+    title: 'Página login',
   },
   {
     path: '',
