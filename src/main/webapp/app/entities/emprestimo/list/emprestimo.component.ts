@@ -11,6 +11,7 @@ import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigati
 import { IEmprestimo } from '../emprestimo.model';
 import { EmprestimoService, EntityArrayResponseType } from '../service/emprestimo.service';
 import { EmprestimoDeleteDialogComponent } from '../delete/emprestimo-delete-dialog.component';
+import { EstudanteService } from 'app/entities/estudante/service/estudante.service';
 
 @Component({
   selector: 'jhi-emprestimo',
@@ -20,12 +21,17 @@ import { EmprestimoDeleteDialogComponent } from '../delete/emprestimo-delete-dia
 export class EmprestimoComponent implements OnInit {
   subscription: Subscription | null = null;
   emprestimos = signal<IEmprestimo[]>([]);
+  estudantesMap = new Map<number, string>();
   isLoading = false;
+
+  // Texto do filtro
+  filterText = '';
 
   sortState = sortStateSignal({});
 
   public readonly router = inject(Router);
   protected readonly emprestimoService = inject(EmprestimoService);
+  protected readonly estudanteService = inject(EstudanteService);
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
@@ -60,6 +66,19 @@ export class EmprestimoComponent implements OnInit {
       .subscribe();
   }
 
+  applyFilter(): void {
+    if (this.filterText.trim() === '') {
+      this.load();
+    } else {
+      this.emprestimos.set(
+        this.emprestimos().filter(emprestimo => {
+          const estudanteName = this.estudantesMap.get(emprestimo.estudante!.id);
+          return estudanteName?.toLowerCase().includes(this.filterText.toLowerCase()) ?? false;
+        }),
+      );
+    }
+  }
+
   load(): void {
     this.queryBackend().subscribe({
       next: (res: EntityArrayResponseType) => {
@@ -72,6 +91,22 @@ export class EmprestimoComponent implements OnInit {
     this.handleNavigation(event);
   }
 
+  loadEstudanteName(estudanteId: number): void {
+    if (!this.estudantesMap.has(estudanteId)) {
+      this.estudanteService.find(estudanteId).subscribe({
+        next: response => {
+          const estudante = response.body;
+          if (estudante) {
+            this.estudantesMap.set(estudanteId, estudante.nomeEstudante!);
+          }
+        },
+        error: () => {
+          this.estudantesMap.set(estudanteId, 'Nome não encontrado');
+        },
+      });
+    }
+  }
+
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
@@ -79,6 +114,13 @@ export class EmprestimoComponent implements OnInit {
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.emprestimos.set(this.refineData(dataFromBody));
+
+    // Obtem o nome dos estudantes para exibir na tabela
+    this.emprestimos().forEach(emprestimo => {
+      if (emprestimo.estudante) {
+        this.loadEstudanteName(emprestimo.estudante.id);
+      }
+    });
   }
 
   protected refineData(data: IEmprestimo[]): IEmprestimo[] {

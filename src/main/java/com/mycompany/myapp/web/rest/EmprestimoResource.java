@@ -3,7 +3,6 @@ package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.domain.Emprestimo;
 import com.mycompany.myapp.domain.Livro;
 import com.mycompany.myapp.repository.EmprestimoRepository;
-import com.mycompany.myapp.repository.LivroRepository;
 import com.mycompany.myapp.service.EmprestimoService; // Importa o EmprestimoService
 import com.mycompany.myapp.service.LivroService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;

@@ -29,6 +29,16 @@
       <span>Nenhum Emprestimo encontrado</span>
     </div>
   } @else {
+    <div class="mb-3 mt-3 w-25">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar por nome do estudante"
+        [(ngModel)]="filterText"
+        (ngModelChange)="applyFilter()"
+      />
+    </div>
+
     <div class="table-responsive table-entities" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
@@ -80,7 +90,9 @@
               <td>
                 @if (emprestimo.estudante) {
                   <div>
-                    <a [routerLink]="['/estudante', emprestimo.estudante.id, 'view']">{{ emprestimo.estudante.id }}</a>
+                    <a [routerLink]="['/estudante', emprestimo.estudante.id, 'view']"
+                      >{{ emprestimo.estudante.id }} - [{{ estudantesMap.get(emprestimo.estudante.id) || 'Nome não disponível' }}]</a
+                    >
                   </div>
                 }
               </td>
