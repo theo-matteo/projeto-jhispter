@@ -24,107 +24,108 @@
 
   <jhi-alert></jhi-alert>
 
+  <div class="mb-3 mt-3 w-25">
+    <select [(ngModel)]="filterBy" class="form-control" (change)="applyFilter()">
+      <option value="estudante">Filtrar por estudante</option>
+      <option value="livro">Filtrar por livro</option>
+    </select>
+  </div>
+
+  <div class="mb-3 mt-3 w-25">
+    <input type="text" [(ngModel)]="filterText" (input)="applyFilter()" class="form-control" placeholder="Digite o nome para filtrar" />
+  </div>
+
+  <div class="table-responsive table-entities" id="entities">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span>Identificador</span>
+
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dataEmprestimo">
+            <div class="d-flex">
+              <span>Data do empréstimo</span>
+
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="status">
+            <div class="d-flex">
+              <span>Status / Observações</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="estudante.id">
+            <div class="d-flex">
+              <span>Estudante</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="livro.id">
+            <div class="d-flex">
+              <span>Livro</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (emprestimo of emprestimos(); track trackId(emprestimo)) {
+          <tr data-cy="entityTable">
+            <td>
+              <a [routerLink]="['/emprestimo', emprestimo.id, 'view']">{{ emprestimo.id }}</a>
+            </td>
+            <td>{{ emprestimo.dataEmprestimo | formatMediumDatetime }}</td>
+            <td>{{ emprestimo.status }}</td>
+            <td>
+              @if (emprestimo.estudante) {
+                <div>
+                  <a [routerLink]="['/estudante', emprestimo.estudante.id, 'view']"
+                    >{{ emprestimo.estudante.id }} - [{{ estudantesMap.get(emprestimo.estudante.id) || 'Nome não disponível' }}]</a
+                  >
+                </div>
+              }
+            </td>
+            <td>
+              @if (emprestimo.livro) {
+                <div>
+                  <a [routerLink]="['/livro', emprestimo.livro.id, 'view']"
+                    >{{ emprestimo.livro.id }} - [{{ livrosMap.get(emprestimo.livro.id) || 'ssfe' }}]</a
+                  >
+                </div>
+              }
+            </td>
+            <td class="text-end">
+              <div class="btn-group">
+                <a [routerLink]="['/emprestimo', emprestimo.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                  <fa-icon icon="eye"></fa-icon>
+                  <span class="d-none d-md-inline">Visualizar</span>
+                </a>
+
+                <a [routerLink]="['/emprestimo', emprestimo.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                  <fa-icon icon="pencil-alt"></fa-icon>
+                  <span class="d-none d-md-inline">Editar</span>
+                </a>
+
+                <button type="submit" (click)="delete(emprestimo)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <fa-icon icon="times"></fa-icon>
+                  <span class="d-none d-md-inline">Excluir</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
   @if (emprestimos().length === 0) {
     <div class="alert alert-warning" id="no-result">
-      <span>Nenhum Emprestimo encontrado</span>
-    </div>
-  } @else {
-    <div class="mb-3 mt-3 w-25">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Filtrar por nome do estudante"
-        [(ngModel)]="filterText"
-        (ngModelChange)="applyFilter()"
-      />
-    </div>
-
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span>Código</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataEmprestimo">
-              <div class="d-flex">
-                <span>Data do empréstimo</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="status">
-              <div class="d-flex">
-                <span>Status / Observações</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="estudante.id">
-              <div class="d-flex">
-                <span>Estudante</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="livro.id">
-              <div class="d-flex">
-                <span>Livro</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (emprestimo of emprestimos(); track trackId(emprestimo)) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/emprestimo', emprestimo.id, 'view']">{{ emprestimo.id }}</a>
-              </td>
-              <td>{{ emprestimo.dataEmprestimo | formatMediumDatetime }}</td>
-              <td>{{ emprestimo.status }}</td>
-              <td>
-                @if (emprestimo.estudante) {
-                  <div>
-                    <a [routerLink]="['/estudante', emprestimo.estudante.id, 'view']"
-                      >{{ emprestimo.estudante.id }} - [{{ estudantesMap.get(emprestimo.estudante.id) || 'Nome não disponível' }}]</a
-                    >
-                  </div>
-                }
-              </td>
-              <td>
-                @if (emprestimo.livro) {
-                  <div>
-                    <a [routerLink]="['/livro', emprestimo.livro.id, 'view']">{{ emprestimo.livro.id }}</a>
-                  </div>
-                }
-              </td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/emprestimo', emprestimo.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">Visualizar</span>
-                  </a>
-
-                  <a [routerLink]="['/emprestimo', emprestimo.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Editar</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(emprestimo)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Excluir</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+      <span>Nenhum empréstimo encontrado</span>
     </div>
   }
 </div>

@@ -3,20 +3,20 @@
     <h1 class="display-4"><span>Biblioteca de Babel</span></h1>
     <p class="lead">Seja bem-vindo!</p>
 
-    <div class="mt-4">
-      <p class="text-muted">Você pode realizar diferentes ações dentre do site, consulte o menu no canto superior direito.</p>
-      <ul class="list-group">
-        <li class="list-group-item">
-          📚 <strong>Estudantes - </strong> Realização de cadastro de estudantes, atualize informações e veja detalhes de cada estudante.
-        </li>
-        <li class="list-group-item">📖 <strong>Livros - </strong> Adicione, edite e remova livros.</li>
-        <li class="list-group-item">✍️ <strong>Autores - </strong> Cadastre e gerencie informações sobre os autores.</li>
-        <li class="list-group-item">🔄 <strong>Empréstimos - </strong> Controle o empréstimo de livros pelos estudantes.</li>
-      </ul>
-    </div>
-
     <div>
       @if (account() !== null) {
+        <div class="mt-4">
+          <p class="text-muted">Você pode realizar diferentes ações dentre do site, consulte o menu no canto superior direito.</p>
+          <ul class="list-group">
+            <li class="list-group-item">
+              📚 <strong>Estudantes - </strong> Realização de cadastro de estudantes, atualize informações e veja detalhes de cada
+              estudante.
+            </li>
+            <li class="list-group-item">📖 <strong>Livros - </strong> Adicione, edite e remova livros.</li>
+            <li class="list-group-item">✍️ <strong>Autores - </strong> Cadastre e gerencie informações sobre os autores.</li>
+            <li class="list-group-item">🔄 <strong>Empréstimos - </strong> Controle o empréstimo de livros pelos estudantes.</li>
+          </ul>
+        </div>
         <!-- <div class="alert alert-success">
           @if (account(); as accountRef) {
             <span id="home-logged-message">Você está logado como &quot;{{ accountRef.login }}&quot;.</span>

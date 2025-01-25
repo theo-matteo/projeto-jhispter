@@ -12,6 +12,7 @@ import { IEmprestimo } from '../emprestimo.model';
 import { EmprestimoService, EntityArrayResponseType } from '../service/emprestimo.service';
 import { EmprestimoDeleteDialogComponent } from '../delete/emprestimo-delete-dialog.component';
 import { EstudanteService } from 'app/entities/estudante/service/estudante.service';
+import { LivroService } from 'app/entities/livro/service/livro.service';
 
 @Component({
   selector: 'jhi-emprestimo',
@@ -21,17 +22,22 @@ import { EstudanteService } from 'app/entities/estudante/service/estudante.servi
 export class EmprestimoComponent implements OnInit {
   subscription: Subscription | null = null;
   emprestimos = signal<IEmprestimo[]>([]);
-  estudantesMap = new Map<number, string>();
   isLoading = false;
+
+  // Map de estudantes e livros
+  estudantesMap = new Map<number, string>();
+  livrosMap = new Map<number, string>();
 
   // Texto do filtro
   filterText = '';
+  filterBy = 'estudante';
 
   sortState = sortStateSignal({});
 
   public readonly router = inject(Router);
   protected readonly emprestimoService = inject(EmprestimoService);
   protected readonly estudanteService = inject(EstudanteService);
+  protected readonly livroService = inject(LivroService);
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
@@ -73,7 +79,11 @@ export class EmprestimoComponent implements OnInit {
       this.emprestimos.set(
         this.emprestimos().filter(emprestimo => {
           const estudanteName = this.estudantesMap.get(emprestimo.estudante!.id);
-          return estudanteName?.toLowerCase().includes(this.filterText.toLowerCase()) ?? false;
+          const livroTitle = this.livrosMap.get(emprestimo.livro!.id);
+          return (
+            (estudanteName?.toLowerCase().includes(this.filterText.toLowerCase()) ?? false) ||
+            (livroTitle?.toLowerCase().includes(this.filterText.toLowerCase()) ?? false)
+          );
         }),
       );
     }
@@ -107,6 +117,22 @@ export class EmprestimoComponent implements OnInit {
     }
   }
 
+  loadLivroName(livroId: number): void {
+    if (!this.livrosMap.has(livroId)) {
+      this.livroService.find(livroId).subscribe({
+        next: response => {
+          const livro = response.body;
+          if (livro) {
+            this.livrosMap.set(livroId, livro.titulo!); // Supondo que o título do livro seja o campo 'titulo'
+          }
+        },
+        error: () => {
+          this.livrosMap.set(livroId, 'Título não encontrado');
+        },
+      });
+    }
+  }
+
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
@@ -119,6 +145,7 @@ export class EmprestimoComponent implements OnInit {
     this.emprestimos().forEach(emprestimo => {
       if (emprestimo.estudante) {
         this.loadEstudanteName(emprestimo.estudante.id);
+        this.loadLivroName(emprestimo.livro!.id);
       }
     });
   }
