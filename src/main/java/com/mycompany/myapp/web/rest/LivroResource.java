@@ -139,14 +139,20 @@ public class LivroResource {
     }
 
     /**
-     * {@code GET  /livros} : get all the livros.
+     * {@code GET  /livros} : get all the books or books by a specific author.
      *
+     * @param autorId the ID of the author (optional). If not provided, returns all books.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of livros in body.
      */
     @GetMapping("")
-    public List<Livro> getAllLivros() {
-        LOG.debug("REST request to get all Livros");
-        return livroRepository.findAll();
+    public ResponseEntity<List<Livro>> getLivros(@RequestParam(value = "autorId", required = false) Long autorId) {
+        List<Livro> livros;
+        if (autorId != null) {
+            livros = livroRepository.findAllByAutorId(autorId);
+        } else {
+            livros = livroRepository.findAll();
+        }
+        return ResponseEntity.ok().body(livros);
     }
 
     /**

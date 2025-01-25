@@ -40,6 +40,11 @@ export class LivroService {
     return this.http.get<ILivro[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  // Query personalizada para buscar livros por autor
+  queryByAutor(autorId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<ILivro[]>(`${this.resourceUrl}?autorId=${autorId}`, { observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
