@@ -41,7 +41,7 @@
 
         @let statusRef = editForm.get('status')!;
         <div class="mb-3">
-          <label class="form-label" for="field_status">Status</label>
+          <label class="form-label" for="field_status">Status / Observações</label>
           <input type="text" class="form-control" name="status" id="field_status" data-cy="status" formControlName="status" />
           @if (statusRef.invalid && (statusRef.dirty || statusRef.touched)) {
             <div>
