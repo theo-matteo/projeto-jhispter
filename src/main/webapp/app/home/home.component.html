@@ -1,25 +1,51 @@
 <div class="row">
   <div class="col-md-9">
     <h1 class="display-4"><span>Biblioteca de Babel</span></h1>
-    <p class="lead">Bem-vindo à Biblioteca de Babel, a biblioteca infinita.</p>
+    <p class="lead">Seja bem-vindo!</p>
+
+    <div class="mt-4">
+      <p class="text-muted">Você pode realizar diferentes ações dentre do site, consulte o menu no canto superior direito.</p>
+      <ul class="list-group">
+        <li class="list-group-item">
+          📚 <strong>Estudantes - </strong> Realização de cadastro de estudantes, atualize informações e veja detalhes de cada estudante.
+        </li>
+        <li class="list-group-item">📖 <strong>Livros - </strong> Adicione, edite e remova livros.</li>
+        <li class="list-group-item">✍️ <strong>Autores - </strong> Cadastre e gerencie informações sobre os autores.</li>
+        <li class="list-group-item">🔄 <strong>Empréstimos - </strong> Controle o empréstimo de livros pelos estudantes.</li>
+      </ul>
+    </div>
+
     <div>
       @if (account() !== null) {
-        <div class="alert alert-success">
+        <!-- <div class="alert alert-success">
           @if (account(); as accountRef) {
             <span id="home-logged-message">Você está logado como &quot;{{ accountRef.login }}&quot;.</span>
           }
         </div>
+        -->
       } @else {
-        <div class="alert alert-warning">
-          <span>Bibliotecário responsável, caso deseje entrar </span>
-          <a class="alert-link" (click)="login()">entrar</a
-          ><span>, utilize a conta padrão: <br />- Administrador (usuário=&quot;admin&quot; and senha=&quot;admin&quot;)</span>
+        <div class="alert alert-info rounded shadow p-4 mt-4">
+          <div>
+            <div>
+              <span class="fw-bold">Bibliotecário responsável, use as credenciais abaixo</span>
+              <ul class="mt-2 mb-0">
+                <li><strong>Usuário:</strong> bibliotecario</li>
+                <li><strong>Senha:</strong> 123456</li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-3">
+            <button class="btn btn-primary" (click)="login()">Entrar</button>
+          </div>
         </div>
 
-        <div class="alert alert-warning">
+        <!--
+          // Criação de uma nova conta
+          <div class="alert alert-warning">
           <span>Não possui uma conta ainda?</span>&nbsp;
           <a class="alert-link" routerLink="/account/register">Crie uma nova conta</a>
         </div>
+        -->
       }
     </div>
   </div>

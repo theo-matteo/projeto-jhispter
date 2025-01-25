@@ -49,7 +49,15 @@
         @let telefoneRef = editForm.get('telefone')!;
         <div class="mb-3">
           <label class="form-label" for="field_telefone">Telefone do estudante</label>
-          <input type="text" class="form-control" name="telefone" id="field_telefone" data-cy="telefone" formControlName="telefone" />
+          <input
+            type="text"
+            class="form-control"
+            name="telefone"
+            id="field_telefone"
+            data-cy="telefone"
+            formControlName="telefone"
+            (input)="formataTelefone($event)"
+          />
           @if (telefoneRef.invalid && (telefoneRef.dirty || telefoneRef.touched)) {
             <div>
               @if (editForm.get('telefone')?.errors?.required) {

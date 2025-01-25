@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-autor-heading" data-cy="AutorCreateUpdateHeading">Criar ou editar Autor</h2>
+      <h2 id="jhi-autor-heading" data-cy="AutorCreateUpdateHeading">Criar ou editar autor</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -15,7 +15,7 @@
 
         @let nomeAutorRef = editForm.get('nomeAutor')!;
         <div class="mb-3">
-          <label class="form-label" for="field_nomeAutor">Nome Autor</label>
+          <label class="form-label" for="field_nomeAutor">Nome do autor</label>
           <input type="text" class="form-control" name="nomeAutor" id="field_nomeAutor" data-cy="nomeAutor" formControlName="nomeAutor" />
           @if (nomeAutorRef.invalid && (nomeAutorRef.dirty || nomeAutorRef.touched)) {
             <div>

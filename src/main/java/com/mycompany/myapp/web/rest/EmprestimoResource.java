@@ -1,7 +1,11 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Emprestimo;
+import com.mycompany.myapp.domain.Livro;
 import com.mycompany.myapp.repository.EmprestimoRepository;
+import com.mycompany.myapp.repository.LivroRepository;
+import com.mycompany.myapp.service.EmprestimoService; // Importa o EmprestimoService
+import com.mycompany.myapp.service.LivroService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -35,9 +39,13 @@ public class EmprestimoResource {
     private String applicationName;
 
     private final EmprestimoRepository emprestimoRepository;
+    private final EmprestimoService emprestimoService;
+    private final LivroService livroService;
 
-    public EmprestimoResource(EmprestimoRepository emprestimoRepository) {
+    public EmprestimoResource(EmprestimoRepository emprestimoRepository, EmprestimoService emprestimoService, LivroService livroService) {
         this.emprestimoRepository = emprestimoRepository;
+        this.emprestimoService = emprestimoService;
+        this.livroService = livroService;
     }
 
     /**
@@ -51,12 +59,12 @@ public class EmprestimoResource {
     public ResponseEntity<Emprestimo> createEmprestimo(@Valid @RequestBody Emprestimo emprestimo) throws URISyntaxException {
         LOG.debug("REST request to save Emprestimo : {}", emprestimo);
         if (emprestimo.getId() != null) {
-            throw new BadRequestAlertException("A new emprestimo cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("Um novo empréstimo foi criado com o ID", ENTITY_NAME, "idexists");
         }
-        emprestimo = emprestimoRepository.save(emprestimo);
-        return ResponseEntity.created(new URI("/api/emprestimos/" + emprestimo.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, emprestimo.getId().toString()))
-            .body(emprestimo);
+        Emprestimo result = emprestimoService.createEmprestimo(emprestimo);
+        return ResponseEntity.created(new URI("/api/emprestimos/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -173,6 +181,19 @@ public class EmprestimoResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmprestimo(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Emprestimo : {}", id);
+
+        // Busca o emprestimo pelo id
+        Optional<Emprestimo> emprestimo = emprestimoRepository.findById(id);
+
+        // Caso o emprestimo exista, incrementa a quantidade do livro
+        if (emprestimo.isPresent()) {
+            Emprestimo existingEmprestimo = emprestimo.get();
+            Livro livro = existingEmprestimo.getLivro();
+
+            // Incrementa quantidade do livro no banco de dados
+            livroService.incrementaQuantidadeLivro(livro);
+        }
+
         emprestimoRepository.deleteById(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

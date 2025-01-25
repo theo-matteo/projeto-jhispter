@@ -2,7 +2,7 @@
   <div class="col-8">
     @if (emprestimo(); as emprestimoRef) {
       <div>
-        <h2 data-cy="emprestimoDetailsHeading"><span>Emprestimo</span></h2>
+        <h2 data-cy="emprestimoDetailsHeading"><span>Empréstimo</span></h2>
 
         <hr />
 
@@ -15,7 +15,7 @@
           <dd>
             <span>{{ emprestimoRef.id }}</span>
           </dd>
-          <dt><span>Data Emprestimo</span></dt>
+          <dt><span>Data do Empréstimo</span></dt>
           <dd>
             <span>{{ emprestimoRef.dataEmprestimo | formatMediumDatetime }}</span>
           </dd>
