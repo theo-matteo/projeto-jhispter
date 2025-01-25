@@ -52,7 +52,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="editForm.controls.id.value === null">
           <label class="form-label" for="field_estudante">Estudante</label>
           <select
             class="form-control"
@@ -69,7 +69,7 @@
           </select>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="editForm.controls.id.value === null">
           <label class="form-label" for="field_livro">Livro</label>
           <select class="form-control" id="field_livro" data-cy="livro" name="livro" formControlName="livro" [compareWith]="compareLivro">
             <option [ngValue]="null"></option>

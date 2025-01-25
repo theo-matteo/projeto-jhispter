@@ -109,7 +109,12 @@ export class EmprestimoUpdateComponent implements OnInit {
     this.livroService
       .query()
       .pipe(map((res: HttpResponse<ILivro[]>) => res.body ?? []))
-      .pipe(map((livros: ILivro[]) => this.livroService.addLivroToCollectionIfMissing<ILivro>(livros, this.emprestimo?.livro)))
+      .pipe(
+        map((livros: ILivro[]) =>
+          // Filtra os livros com quantidade maior que 0
+          livros.filter(livro => livro.quantidade! > 0),
+        ),
+      )
       .subscribe((livros: ILivro[]) => (this.livrosSharedCollection = livros));
   }
 }

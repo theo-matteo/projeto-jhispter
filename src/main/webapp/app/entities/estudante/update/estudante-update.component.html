@@ -37,13 +37,10 @@
         <div class="mb-3">
           <label class="form-label" for="field_email">E-mail do estudante</label>
           <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
-          @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
-            <div>
-              @if (editForm.get('email')?.errors?.required) {
-                <small class="form-text text-danger">O campo é obrigatório.</small>
-              }
-            </div>
-          }
+          <div *ngIf="emailRef.invalid && (emailRef.dirty || emailRef.touched)" class="form-text text-danger">
+            <small *ngIf="emailRef.errors?.required">O campo é obrigatório.</small>
+            <small *ngIf="emailRef.errors?.email">E-mail inválido. Verifique o formato do e-mail.</small>
+          </div>
         </div>
 
         @let telefoneRef = editForm.get('telefone')!;
@@ -58,13 +55,9 @@
             formControlName="telefone"
             (input)="formataTelefone($event)"
           />
-          @if (telefoneRef.invalid && (telefoneRef.dirty || telefoneRef.touched)) {
-            <div>
-              @if (editForm.get('telefone')?.errors?.required) {
-                <small class="form-text text-danger">O campo é obrigatório.</small>
-              }
-            </div>
-          }
+          <div *ngIf="telefoneRef.invalid && (telefoneRef.dirty || telefoneRef.touched)" class="form-text text-danger">
+            <small *ngIf="telefoneRef.errors?.invalidTelefone">Número de telefone inválido. O número deve ter 10 ou 11 dígitos.</small>
+          </div>
         </div>
       </div>
 

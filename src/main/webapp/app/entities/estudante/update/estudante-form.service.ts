@@ -44,10 +44,10 @@ export class EstudanteFormService {
         validators: [Validators.required],
       }),
       email: new FormControl(estudanteRawValue.email, {
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.email],
       }),
       telefone: new FormControl(estudanteRawValue.telefone, {
-        validators: [Validators.required],
+        validators: [Validators.required, this.telefoneValidator],
       }),
     });
   }
@@ -70,5 +70,24 @@ export class EstudanteFormService {
     return {
       id: null,
     };
+  }
+
+  private telefoneValidator(control: FormControl): Record<string, boolean> | null {
+    const value = control.value;
+
+    // Caso nao esteja preenchido
+    if (!value) {
+      return null;
+    }
+
+    // Remove todos os caracteres não numéricos
+    const apenasNumeros = value.replace(/\D/g, '');
+
+    // Verifica se tem 10 ou 11 dígitos e Retorna erro se a quantidade de dígitos for incorreta
+    if (apenasNumeros.length !== 10 && apenasNumeros.length !== 11) {
+      return { invalidTelefone: true };
+    }
+
+    return null;
   }
 }

@@ -54,7 +54,7 @@
           <select class="form-control" id="field_autor" data-cy="autor" name="autor" formControlName="autor" [compareWith]="compareAutor">
             <option [ngValue]="null"></option>
             @for (autorOption of autorsSharedCollection; track $index) {
-              <option [ngValue]="autorOption">{{ autorOption.id }}</option>
+              <option [ngValue]="autorOption">{{ autorOption.id }} - {{ autorOption.nomeAutor }}</option>
             }
           </select>
         </div>
